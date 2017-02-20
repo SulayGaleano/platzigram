@@ -1,16 +1,29 @@
 var express = require('express');
 var multer  = require('multer');
 var ext = require('file-extension');
+var aws = require('aws-sdk');
+var multerS3 = require('multer-s3');
+var config = require('./config');
 
-var storage = multer.diskStorage({
-  destination: function (req, file, cb) {
-    cb(null, './uploads')
-  },
-  filename: function (req, file, cb) {
+var s3 = new aws.S3({
+  accessKeyId: config.aws.secretKey,
+  secretAccessKey: config.aws.secretKey
+});
+
+var storage = multerS3({
+  s3: s3,
+  bucket: 'platzigram-cursos',
+  acl: 'public-read',
+  metadata: function (req, file, cb) {
+    cb(null, {
+      fieldName: file.fieldname
+    })
+  }, 
+  key: function (req, file, cb) {
     cb(null, +Date.now() + '.' + ext(file.originalname))
   }
-})
- 
+});
+
 var upload = multer({ storage: storage }).single('picture');
 
 var app = express();
@@ -21,15 +34,15 @@ app.use(express.static('public'));
 
 app.get('/', function (req, res) {
   res.render('index', { title: 'Platzigram' });
-})
+});
 
 app.get('/signup', function (req, res) {
   res.render('index', { title: 'Platzigram - Signup' });
-})
+});
 
 app.get('/signin', function (req, res) {
   res.render('index', { title: 'Platzigram - Signin' });
-})
+});
 
 app.get('/api/pictures', function (req, res, next) {
   var pictures = [
@@ -67,9 +80,9 @@ app.post('/api/pictures', function (req, res) {
     }
     res.send('File uploaded');
   })
-})
+});
 
-app.get('/api/user/:username', (req, res) => {
+app.get('/api/user/:username', function (req, res){
   const user = {
     username: 'platzi',
     avatar: 'https://igcdn-photos-b-a.akamaihd.net/hphotos-ak-xpa1/t51.2885-19/11351571_102153813463801_2062911600_a.jpg',
@@ -105,21 +118,21 @@ app.get('/api/user/:username', (req, res) => {
         likes: 11
       }
     ]
-  }
+  };
 
   res.send(user);
-})
+});
 
 app.get('/:username', function (req, res) {
-  res.render('index', { title: `Platzigram - ${req.params.username}` });
-})
+  res.render('index', { title: 'Platzigram - ${req.params.username}' });
+});
 
 app.get('/:username/:id', function (req, res) {
-  res.render('index', { title: `Platzigram - ${req.params.username}` });
-})
+  res.render('index', { title: 'Platzigram - ${req.params.username}' });
+});
 
-app.listen(3000, function (err) {
+app.listen(3100, function (err) {
   if (err) return console.log('Hubo un error'), process.exit(1);
 
-  console.log('Platzigram escuchando en el puerto 3000');
-})
+  console.log('Platzigram escuchando en el puerto 3100');
+});
