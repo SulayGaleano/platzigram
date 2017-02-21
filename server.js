@@ -49,7 +49,7 @@ app.get('/api/pictures', function (req, res, next) {
     {
       user: {
         username: 'slifszyc',
-        avatar: 'https://scontent-atl3-1.xx.fbcdn.net/hphotos-xpa1/v/t1.0-9/11031148_10153448564292612_2579019413701631604_n.jpg?oh=d83cdd0687c87c91b247a42375fc5a57&oe=57B12767'
+        avatar: 'https://image.freepik.com/free-vector/coloured-boy-design_1114-83.jpg'
       },
       url: 'office.jpg',
       likes: 0,
@@ -59,7 +59,7 @@ app.get('/api/pictures', function (req, res, next) {
     {
       user: {
         username: 'slifszyc',
-        avatar: 'https://scontent-atl3-1.xx.fbcdn.net/hphotos-xpa1/v/t1.0-9/11031148_10153448564292612_2579019413701631604_n.jpg?oh=d83cdd0687c87c91b247a42375fc5a57&oe=57B12767'
+        avatar: 'https://s-media-cache-ak0.pinimg.com/736x/91/06/c0/9106c0674c781dc457b4c96e337cf048.jpg'
       },
       url: 'office.jpg',
       likes: 1,
